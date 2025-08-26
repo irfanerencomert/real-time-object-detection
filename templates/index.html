@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Object Detection</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="row bg-primary text-white py-3 mb-4">
+            <div class="col-12 text-center">
+                <h1><i class="fas fa-eye"></i> Real-time Object Detection</h1>
+                <p class="mb-0">PyTorch tabanlı nesne sınıflandırma uygulaması</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sol Panel - Kontroller -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cog"></i> Kontroller</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Dosya Yükleme -->
+                        <div class="mb-3">
+                            <label for="imageInput" class="form-label">
+                                <i class="fas fa-upload"></i> Görüntü Yükle
+                            </label>
+                            <input type="file" class="form-control" id="imageInput"
+                                   accept="image/*" onchange="loadImage(event)">
+                        </div>
+
+                        <!-- Kamera -->
+                        <div class="mb-3">
+                            <button class="btn btn-success w-100" onclick="startCamera()">
+                                <i class="fas fa-camera"></i> Kamera Başlat
+                            </button>
+                        </div>
+
+                        <!-- Webcam -->
+                        <div class="mb-3">
+                            <button class="btn btn-info w-100" onclick="startWebcam()">
+                                <i class="fas fa-video"></i> Webcam Başlat
+                            </button>
+                        </div>
+
+                        <!-- Tahmin Butonu -->
+                        <div class="mb-3">
+                            <button class="btn btn-primary w-100" onclick="predictImage()"
+                                    id="predictBtn" disabled>
+                                <i class="fas fa-brain"></i> Tahmin Yap
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sınıf Bilgileri -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6><i class="fas fa-list"></i> Tanınabilir Sınıflar</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for class_name in class_names %}
+                            <div class="col-6 mb-1">
+                                <small class="badge bg-secondary">{{ class_name }}</small>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orta Panel - Görüntü -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-image"></i> Görüntü</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div id="imageContainer">
+                            <img id="previewImage" class="img-fluid"
+                                 style="max-height: 400px; display: none;">
+                            <video id="cameraStream" class="img-fluid"
+                                   style="max-height: 400px; display: none;" autoplay muted></video>
+                            <canvas id="cameraCanvas" style="display: none;"></canvas>
+                            <div id="dropZone" class="drop-zone">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-muted"></i>
+                                <p class="text-muted mt-2">Görüntü yükleyin veya sürükleyin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Panel - Sonuçlar -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-bar"></i> Tahmin Sonuçları</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="loadingSpinner" class="text-center" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Yükleniyor...</span>
+                            </div>
+                            <p class="mt-2">Tahmin yapılıyor...</p>
+                        </div>
+
+                        <div id="predictionResult" style="display: none;">
+                            <div class="alert alert-success">
+                                <h6><i class="fas fa-bullseye"></i> Tahmin:</h6>
+                                <h4 id="predictedClass"></h4>
+                                <p>Güven: <span id="confidence"></span>%</p>
+                            </div>
+
+                            <h6>Tüm Sınıf Olasılıkları:</h6>
+                            <div id="probabilityBars"></div>
+                        </div>
+
+                        <div id="errorMessage" class="alert alert-danger" style="display: none;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span id="errorText"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+    const classNames = {{ class_names | tojson }};
+</script>
+</body>
+</html>
