@@ -9,13 +9,13 @@
 
 ---
 
-## 📌 Overview
+## 🚀 Overview
 
 This project demonstrates a real-time object detection pipeline built with **PyTorch**, utilizing **ResNet50** and **EfficientNetB0** backbones fine-tuned on **CIFAR-10**. Live webcam feed is integrated for streaming predictions via a Flask API and an interactive Streamlit dashboard.
 
 ---
 
-## 🚀 Key Features
+## 🎨 Key Features
 
 - 🔁 **Transfer Learning** on ImageNet pre-trained CNNs  
 - 🧪 **Custom Training** with advanced augmentations (Albumentations)  
@@ -59,7 +59,7 @@ This project demonstrates a real-time object detection pipeline built with **PyT
 
 ---
 
-## 🧾 Project Structure
+## 📂 Project Structure
 
 ```bash
 real-time-object-detection/
@@ -80,4 +80,5 @@ real-time-object-detection/
 ```
 ## 📝 License
 
-⚠️ This project was developed by İrfan Eren Cömert as part of his academic and personal portfolio. Any unauthorized use or representation is strictly prohibited.
+This project was developed by İrfan Eren Cömert as part of his academic and personal portfolio.
+⚠️ Unauthorized use, replication, or misrepresentation is strictly prohibited under the MIT License.
